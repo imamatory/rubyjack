@@ -9,14 +9,12 @@ module Rubyjack
       @type = type
     end
 
-    def value
-      11 if @type == Constants::ACE
-      10 if Constants::FACE_CARDS.include? @type
-      @type
-    end
-
     def ==(other)
       (type == other.type) && (suit == other.suit)
+    end
+
+    def ace?
+      @type == Constants::ACE
     end
   end
 end
