@@ -1,14 +1,18 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-require "bundler/setup"
-require "rubyjack"
+require 'bundler/setup'
+require 'rubyjack'
 
-# You can add fixtures and/or initialization code here to make experimenting
-# with your gem easier. You can also use a different console, if you like.
+$LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
+require 'rubyjack'
 
-# (If you use this, don't forget to add pry to your Gemfile!)
-# require "pry"
-# Pry.start
+include Rubyjack
 
-require "irb"
-IRB.start(__FILE__)
+def reload!
+  files = $LOADED_FEATURES.select { |feat| feat =~ %r{/rubyjack/} }
+  files.each { |file| load file }
+end
+
+require 'pry'
+Pry.start

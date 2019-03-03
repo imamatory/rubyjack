@@ -3,11 +3,10 @@
 require 'rubyjack/constants'
 require 'rubyjack/bet'
 require 'rubyjack/card'
-require 'rubyjack/deck'
+require 'rubyjack/shoe'
 require 'rubyjack/game'
 require 'rubyjack/hand'
 require 'rubyjack/player'
-require 'rubyjack/shoe'
 
 module Rubyjack
   class Error < StandardError; end
