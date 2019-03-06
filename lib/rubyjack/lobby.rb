@@ -4,7 +4,7 @@
 
 module Rubyjack
   class Lobby
-    attr_reader :player
+    attr_reader :player, :dealer
 
     def initialize(shoe: Shoe.new, player: Player.new, choose_player_action: ->(_x) { :stand }, print: -> {})
       @shoe = shoe

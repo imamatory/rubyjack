@@ -6,6 +6,7 @@ RSpec.describe(Rubyjack::Lobby) do
   let(:king) { Rubyjack::Card.new(suit: :diamonds, type: :king) }
   let(:queen) { Rubyjack::Card.new(suit: :diamonds, type: :queen) }
   let(:four) { Rubyjack::Card.new(suit: :diamonds, type: 4) }
+  let(:three) { Rubyjack::Card.new(suit: :diamonds, type: 3) }
   let(:eight) { Rubyjack::Card.new(suit: :diamonds, type: 8) }
 
   describe 'simple push' do
@@ -67,6 +68,60 @@ RSpec.describe(Rubyjack::Lobby) do
       lobby = described_class.new(shoe: shoe, choose_player_action: choose_player_action)
       expect(lobby.start).to eq(:player_busted)
       expect(lobby.player.hand.sum).to eq(28)
+    end
+  end
+
+  describe 'dealer busted 1 card' do
+    let(:shoe) { Rubyjack::Shoe.new(cards: [king, four, four, ten, four]) }
+    let(:player_actions) { [:stand] }
+    let(:choose_player_action) { ->(_) { player_actions.pop } }
+
+    it do
+      lobby = described_class.new(shoe: shoe, choose_player_action: choose_player_action)
+      expect(lobby.start).to eq(:dealer_busted)
+      expect(lobby.dealer.hand.sum).to eq(24)
+    end
+  end
+
+  describe 'dealer busted 2 card' do
+    let(:shoe) { Rubyjack::Shoe.new(cards: [king, four, four, ten, four, queen]) }
+    let(:player_actions) { [:stand] }
+    let(:choose_player_action) { ->(_) { player_actions.pop } }
+
+    it do
+      lobby = described_class.new(shoe: shoe, choose_player_action: choose_player_action)
+      expect(lobby.start).to eq(:dealer_busted)
+      expect(lobby.dealer.hand.sum).to eq(22)
+    end
+  end
+
+  describe 'player won by points' do
+    let(:shoe) { Rubyjack::Shoe.new(cards: [three, eight, ten, eight, queen]) }
+    let(:player_actions) { [:stand] }
+    let(:choose_player_action) { ->(_) { player_actions.pop } }
+
+    it do
+      expect(described_class.new(shoe: shoe, choose_player_action: choose_player_action).start).to eq(:player_has_more)
+    end
+  end
+
+  describe 'dealer won by points' do
+    let(:shoe) { Rubyjack::Shoe.new(cards: [ten, ten, queen, eight]) }
+    let(:player_actions) { [:stand] }
+    let(:choose_player_action) { ->(_) { player_actions.pop } }
+
+    it do
+      expect(described_class.new(shoe: shoe, choose_player_action: choose_player_action).start).to eq(:dealer_has_more)
+    end
+  end
+
+  describe 'push by points' do
+    let(:shoe) { Rubyjack::Shoe.new(cards: [four, four, ten, queen, eight]) }
+    let(:player_actions) { [:stand] }
+    let(:choose_player_action) { ->(_) { player_actions.pop } }
+
+    it do
+      expect(described_class.new(shoe: shoe, choose_player_action: choose_player_action).start).to eq(:push_by_points)
     end
   end
 end
