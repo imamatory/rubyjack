@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-require 'rubyjack/base_player'
+require 'rubyjack/hand'
 
 module Rubyjack
-  class Dealer < BasePlayer
+  class Dealer
     attr_accessor :hand
 
-    def initialize(name: 'Dealer')
-      @name = name
-      @hand = []
+    def initialize(hand: Hand.new)
+      @hand = hand
     end
 
-    def move
+    def turn(shoe)
+      @hand.add_card(shoe.hit!) while @hand.sum < 17
     end
   end
 end

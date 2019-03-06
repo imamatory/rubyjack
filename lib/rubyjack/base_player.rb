@@ -2,8 +2,8 @@
 
 module Rubyjack
   class BasePlayer
-    def initialize(name:)
-      @name = name
+    def has_blackjack?
+      @hand
     end
   end
 end

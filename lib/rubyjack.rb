@@ -4,9 +4,10 @@ require 'rubyjack/constants'
 require 'rubyjack/bet'
 require 'rubyjack/card'
 require 'rubyjack/shoe'
-require 'rubyjack/game'
-require 'rubyjack/hand'
+require 'rubyjack/lobby'
+require 'rubyjack/dealer'
 require 'rubyjack/player'
+require 'rubyjack/hand'
 
 module Rubyjack
   class Error < StandardError; end

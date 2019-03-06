@@ -3,7 +3,8 @@
 module Rubyjack
   class Hand
     attr_accessor :cards
-    def initialize(cards: [])
+
+    def initialize(cards = [])
       @cards = cards
     end
 
@@ -26,6 +27,30 @@ module Rubyjack
           count + 2
         end
       end
+    end
+
+    def length
+      @cards.length
+    end
+
+    def empty?
+      @cards.empty?
+    end
+
+    def add_card(card)
+      @cards.push(card)
+    end
+
+    def blackjack?
+      sum == 21 && @cards.length == 2
+    end
+
+    def busted?
+      sum > 21
+    end
+
+    def ==(other)
+      @cards.zip(other.cards).all? { |pair| pair.first == pair.last }
     end
 
     private

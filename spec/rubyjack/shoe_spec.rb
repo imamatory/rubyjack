@@ -1,13 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe(Rubyjack::Shoe) do
-  # FIXME: how to alias modules properly?
-  Card = Rubyjack::Card
-
   let(:amount_of_decks) { 3 }
   let(:amount_of_cards) { 3 * 52 }
-  let(:ace) { Card.new(suit: :spades, type: :A) }
-  let(:king) { Card.new(suit: :diamonds, type: :K) }
+  let(:ace) { Card.new(suit: :spades, type: :ace) }
+  let(:king) { Card.new(suit: :diamonds, type: :king) }
   let(:four) { Card.new(suit: :diamonds, type: 4) }
 
   describe 'shoe' do
