@@ -3,10 +3,12 @@
 module Rubyjack
   class Card
     attr_reader :suit, :type
+    attr_accessor :opened
 
-    def initialize(suit:, type:)
+    def initialize(suit:, type:, opened: true)
       @suit = suit
       @type = type
+      @opened = opened
     end
 
     def ==(other)
@@ -15,6 +17,10 @@ module Rubyjack
 
     def ace?
       @type == Constants::ACE
+    end
+
+    def open!
+      @opened = true
     end
   end
 end

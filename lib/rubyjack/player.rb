@@ -4,8 +4,7 @@ module Rubyjack
   class Player
     attr_accessor :hand
 
-    def initialize(name: 'John Doe', account: 0, hand: Hand.new)
-      @name = name
+    def initialize(account: 0, hand: Hand.new)
       @account = account
       @hand = hand
     end

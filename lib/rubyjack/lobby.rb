@@ -6,7 +6,7 @@ module Rubyjack
   class Lobby
     attr_reader :player, :dealer
 
-    def initialize(shoe: Shoe.new, player: Player.new, choose_player_action: ->(_x) { :stand }, print: -> {})
+    def initialize(shoe: Shoe.new.shuffle, player: Player.new, choose_player_action:, print: ->(player:, dealer:) {})
       @shoe = shoe
       @player = player
       @dealer = Dealer.new
@@ -16,7 +16,7 @@ module Rubyjack
 
     def start
       start_lobby do |status|
-        @print.call
+        @print.call(player: @player, dealer: @dealer)
         return :push_by_blackjack if @player.hand.blackjack? && @dealer.hand.blackjack?
         return :player_has_blackjack if @player.hand.blackjack?
         return :dealer_has_blackjack if @dealer.hand.blackjack?
@@ -46,10 +46,10 @@ module Rubyjack
     private
 
     def hit_initial
-      2.times do
-        @player.hand.add_card(@shoe.hit!)
-        @dealer.hand.add_card(@shoe.hit!)
-      end
+      @player.hand.add_card(@shoe.hit!)
+      @dealer.hand.add_card(@shoe.hit!)
+      @player.hand.add_card(@shoe.hit!)
+      @dealer.hand.add_card(@shoe.hit!(opened: false))
     end
 
     def player_actions

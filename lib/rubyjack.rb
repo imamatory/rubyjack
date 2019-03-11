@@ -8,6 +8,7 @@ require 'rubyjack/lobby'
 require 'rubyjack/dealer'
 require 'rubyjack/player'
 require 'rubyjack/hand'
+require 'rubyjack/game'
 
 module Rubyjack
   class Error < StandardError; end

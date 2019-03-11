@@ -9,17 +9,17 @@ module Rubyjack
       @cards = cards || build_shoe(amount_of_decks)
     end
 
-    def hit!(amount = 1)
-      return @cards.pop if amount == 1
-
-      @cards.pop(amount).reverse
+    def hit!(_amount = 1, opened: true)
+      card = @cards.pop
+      card.opened = opened
+      card
     end
 
     def cards_left
       @cards.length
     end
 
-    def shuffle!
+    def shuffle
       @cards = @cards.shuffle
       self
     end
