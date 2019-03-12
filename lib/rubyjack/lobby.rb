@@ -6,23 +6,21 @@ module Rubyjack
   class Lobby
     attr_reader :player, :dealer
 
-    def initialize(shoe: Shoe.new.shuffle, player: Player.new, choose_player_action:, print: ->(player:, dealer:) {})
-      @shoe = shoe
+    def initialize(shoe: nil, player: Player.new, choose_player_action: nil, print: nil)
+      @shoe = shoe || Shoe.new.shuffle!
       @player = player
       @dealer = Dealer.new
       @choose_player_action = choose_player_action
-      @print = print
+      @print = print || ->(player:, dealer:) {}
     end
 
     def start
       start_lobby do |status|
+        early_result = check_early_result
+        @dealer.open_hand! if !early_result.nil? || status == :check_result
         @print.call(player: @player, dealer: @dealer)
-        return :push_by_blackjack if @player.hand.blackjack? && @dealer.hand.blackjack?
-        return :player_has_blackjack if @player.hand.blackjack?
-        return :dealer_has_blackjack if @dealer.hand.blackjack?
-        return :dealer_busted if @dealer.hand.busted?
-        return :player_busted if @player.hand.busted?
 
+        return early_result unless early_result.nil?
         return check_result if status == :check_result
       end
     end
@@ -31,15 +29,15 @@ module Rubyjack
       hit_initial
       yield :first_distribution
 
-      choise = choose_player_action
-      while choise == :hit
+      loop do
+        choise = choose_player_action
+        break if choise != :hit
+
         @player.hand.add_card(@shoe.hit!)
         yield
-        choise = choose_player_action
       end
 
       @dealer.turn(@shoe)
-      @dealer.open_hand
 
       yield :check_result
     end
@@ -59,6 +57,14 @@ module Rubyjack
 
     def choose_player_action
       @choose_player_action.call(player_actions)
+    end
+
+    def check_early_result
+      return :push_by_blackjack if @player.hand.blackjack? && @dealer.hand.blackjack?
+      return :player_has_blackjack if @player.hand.blackjack?
+      return :dealer_has_blackjack if @dealer.hand.blackjack?
+      return :dealer_busted if @dealer.hand.busted?
+      return :player_busted if @player.hand.busted?
     end
 
     def check_result
