@@ -39,6 +39,7 @@ module Rubyjack
       end
 
       @dealer.turn(@shoe)
+      @dealer.open_hand
 
       yield :check_result
     end

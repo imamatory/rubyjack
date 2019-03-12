@@ -2,4 +2,9 @@
 
 require 'rubyjack'
 
+trap "SIGINT" do
+  puts "\nBye!"
+  exit 0
+end
+
 Rubyjack::Game.new.start
