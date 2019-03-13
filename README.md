@@ -9,5 +9,5 @@ Clone this repo and run `bundle install`
 ## Run
 
 ```
-bin/rubyjack
+bundle exec bin/rubyjack
 ```
