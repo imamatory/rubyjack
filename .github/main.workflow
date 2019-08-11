@@ -4,5 +4,5 @@ workflow "CI" {
 }
 
 action "test" {
-  uses = "ci"
+  uses = "./"
 }
